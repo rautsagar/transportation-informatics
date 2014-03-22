@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TIM</string>
+    <string name="edit_message">Enter a command</string>
+    <string name="button_send">Send</string>
+    <string name="button_crash">Crash</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_display_message">My Message</string>
+    <string name="command_sent">Sent: </string>
+    <string name="command_received"> </string>
+    <string name="status">Status</string>
+    <string name="BTstatus">BT</string>
+    <string name="init">Init</string>
+    <string name="query">Query</string>
+    <string name="poll">Poll</string>
+    <string name="action_quit">Quit</string>
+    <string name="action_fakepop">Fake populate</string>
+    
+</resources>
