@@ -58,7 +58,7 @@ public class MyApp extends Application implements Constants {
             	Log.d("Bluetooth", "Device DISCONNECTED");
             	bluetoothStatus = "BT-NC";
             	bluetoothSocketConnected = false;
-            	MainActivity.mReceiveActivity.receiveMyBtStatus(bluetoothStatus);
+            	CollectData.mReceiveActivity.receiveMyBtStatus(bluetoothStatus);
             	setUpBluetooth();
             }           
         }
@@ -123,7 +123,7 @@ public class MyApp extends Application implements Constants {
 	}
 
 
-    private MainActivity getActivityContext() {
+    private CollectData getActivityContext() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -282,7 +282,7 @@ public class MyApp extends Application implements Constants {
             // Do work to manage the connection (in a separate thread)
             manageConnectedSocket(mmSocket);
             bluetoothStatus = "BT-Ready";
-            MainActivity.mReceiveActivity.receiveMyBtStatus(bluetoothStatus);
+            CollectData.mReceiveActivity.receiveMyBtStatus(bluetoothStatus);
             Log.d("Bluetooth", "socket CONNECTED");
         }
     
@@ -340,13 +340,13 @@ public class MyApp extends Application implements Constants {
                     			myConversation.finalize();
 //                    			Log.d("conversation",myConversation.getExchange());
 //                    			myLog.write(myConversation.getExchange());
-                    			MainActivity.mReceiveActivity.receiveMyStatus(ELM_READY);
+                    			CollectData.mReceiveActivity.receiveMyStatus(ELM_READY);
                     			mQueryVehicle.mReceiveActivity.receiveMyStatus(ELM_READY);
                       			buf="";
                     		} else {
                     			if (elmStatus == ELM_READY) {
                         			elmStatus = ELM_BUSY;
-                        			MainActivity.mReceiveActivity.receiveMyStatus(ELM_BUSY);
+                        			CollectData.mReceiveActivity.receiveMyStatus(ELM_BUSY);
                         			mQueryVehicle.mReceiveActivity.receiveMyStatus(ELM_BUSY);                    				
                     			}
                     			if (buffer[i] > 0) {
@@ -364,7 +364,7 @@ public class MyApp extends Application implements Constants {
                                         if (myConversation != null) {
                                             myConversation.addResponse(timeStamp, r);                                        	
                                         }
-                                        MainActivity.mReceiveActivity.receiveMyMessages(receivedText);
+                                        CollectData.mReceiveActivity.receiveMyMessages(receivedText);
                                         mQueryVehicle.mReceiveActivity.receiveMyMessage(timeStamp, r);
                         			}
                                     buf = "";                    			
@@ -376,7 +376,7 @@ public class MyApp extends Application implements Constants {
                 } catch (IOException e) {
                 	Log.d("Bluetooth","read FAILED");
                 	bluetoothStatus = "BT-NC";
-                	MainActivity.mReceiveActivity.receiveMyBtStatus(bluetoothStatus);
+                	CollectData.mReceiveActivity.receiveMyBtStatus(bluetoothStatus);
                 	break;
                 }
             }
@@ -391,7 +391,7 @@ public class MyApp extends Application implements Constants {
             	Log.d("Bluetooth", "write FAILED");
             }
             elmStatus = ELM_BUSY;
-			MainActivity.mReceiveActivity.receiveMyStatus(ELM_BUSY);
+			CollectData.mReceiveActivity.receiveMyStatus(ELM_BUSY);
 			mQueryVehicle.mReceiveActivity.receiveMyStatus(ELM_BUSY);
             myConversation = new LogExchange(System.currentTimeMillis(), msg);
         }

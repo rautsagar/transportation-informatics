@@ -48,10 +48,5 @@ public class StatsActivity extends Activity {
 
 	}
 
-	public void backpressed(View view) {
-		Intent intent = this.getParentActivityIntent();
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
-	}
 
 }

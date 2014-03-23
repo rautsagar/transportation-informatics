@@ -1,8 +1,6 @@
 package com.example.myfirstbluetooth;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,7 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 
-public class MainActivity extends Activity implements Constants {
+public class CollectData extends Activity implements Constants {
 
 	public TextView sentTextView, statusTextView, BTstatusTextView;
 	public TextView receivedTextView1, receivedTextView2, receivedTextView3, receivedTextView4, receivedTextView5, receivedTextView6, fuelText;
@@ -23,30 +21,20 @@ public class MainActivity extends Activity implements Constants {
 	@Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-//        Log.d("SYS", "onSaveInstanceState");
+
 	}
      
 	@Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-//        Log.d("SYS", "onRestoreInstanceState");
-
-//        yourTextView.setText(savedInstanceState.getString("YourTextViewTextIdentifier"));
-    }
+	}
 	
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        Log.d("SYS", "onCreate");
-/*
-        if (((MyApp)getApplicationContext()).bluetoothInitiated)
-        	Log.d("SYS","bluetooth Initiated");
-        else
-        	Log.d("SYS","bluetooth NOT Initiated");
- */       
+     
     	sentTextView = (TextView) findViewById(R.id.command_sent);
     	statusTextView = (TextView) findViewById(R.id.status);
     	BTstatusTextView = (TextView) findViewById(R.id.BTstatus);
@@ -69,15 +57,9 @@ public class MainActivity extends Activity implements Constants {
     	receivedTextView5.setText(((MyApp)getApplicationContext()).receivedText[4]);
     	receivedTextView6.setText(((MyApp)getApplicationContext()).receivedText[5]);   
     	
-    	//DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-    	//db.fakePop();
-    	
-//    	if (mReceiveActivity == null) {
-//    		Log.d("SYS", "created mReceiveActivity");
+  
         	mReceiveActivity = new ReceiveActivity();
-//   	} else {
-//   		Log.d("SYS", "ALREADY EXISTS mReceiveActivity");
-//   	}
+
     }
 
 	
@@ -94,7 +76,6 @@ public class MainActivity extends Activity implements Constants {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_quit:
-                onBackPressed();
                 return true;
             case R.id.action_fakepop:
             	fakePopulate();
@@ -103,22 +84,7 @@ public class MainActivity extends Activity implements Constants {
         }
     }
     
-    @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-            .setTitle("Really Exit?")
-            .setMessage("Are you sure you want to exit?")
-            .setNegativeButton(android.R.string.no, null)
-            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                public void onClick(DialogInterface arg0, int arg1) {
-                	
-                	// Close the app here
-                	
-                    MainActivity.super.onBackPressed();
-                }
-            }).create().show();
-    }
+   
   
     public void getStats(View view){
     	
