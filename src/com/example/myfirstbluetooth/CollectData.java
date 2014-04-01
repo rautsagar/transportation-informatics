@@ -96,7 +96,15 @@ public class CollectData extends Activity implements Constants {
     
     public void fakePopulate(){
     	DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-    	db.fakePop();
+    	
+    	Long ts = 1392678836739L;
+		int value = 2500;
+		// Inserting Row
+		for(int i = 0; i <100; i++){
+			db.addEntry(ts,value);
+			ts += 1000;
+		}
+    	
     	
     }
  
@@ -201,8 +209,6 @@ public class CollectData extends Activity implements Constants {
     	}
     }
 
-    
-//
 }
 
 

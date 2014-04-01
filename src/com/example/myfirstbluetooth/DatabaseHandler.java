@@ -83,18 +83,5 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
-	public void fakePop(){
-		SQLiteDatabase db = this.getWritableDatabase();
-		
-		Long ts = 1392678836739L;
-		int value = 2500;
-		// Inserting Row
-		for(int i = 0; i <100; i++){
-			db.execSQL("INSERT INTO "+TABLE_AIRFLOW+"(time,value) VALUES("+ts+","+value+")");
-			ts += 1000;
-		}
-	    
-	    db.close(); // Closing database connection
-	}
 
 }

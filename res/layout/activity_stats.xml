@@ -10,12 +10,23 @@
         android:layout_height="wrap_content"
         android:text="TextView" />
 
-    
+    <TextView
+        android:id="@+id/costText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
 
     <Button
         android:id="@+id/button_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Refresh" />
+        android:text="Refresh"
+        android:onClick="refresh" />
+    
+    <com.echo.holographlibrary.PieGraph
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/graph"/>
+    
 
 </LinearLayout>
