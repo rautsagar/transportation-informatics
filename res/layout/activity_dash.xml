@@ -13,6 +13,15 @@
         android:text="Informatics dashboard"
         android:textColor="#ffffff" />
 
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="startCollectData"
+        android:background="@android:color/transparent"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/startxml" />
+
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,8 +38,9 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="false"
                 android:onClick="getStats"
+                android:background="@android:color/transparent"
                 android:scaleType="center"
-                android:src="@drawable/skype" />
+                android:src="@drawable/compare_tripxml" />
 
             <ImageButton
                 android:id="@+id/imageButton1"
@@ -38,8 +48,9 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="false"
                 android:onClick="startCollectData"
+                android:background="@android:color/transparent"
                 android:scaleType="center"
-                android:src="@drawable/psd" />
+                android:src="@drawable/add_expensexml" />
             
         </TableRow>
 
@@ -53,18 +64,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="false"
-                
+                android:background="@android:color/transparent"
                 android:scaleType="center"
-                android:src="@drawable/lastfm" />
+                android:src="@drawable/car_info" />
 
             <ImageButton
                 android:id="@+id/imageButton1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="false"
-                
+                android:background="@android:color/transparent"
                 android:scaleType="center"
-                android:src="@drawable/mitorrent" />
+                android:src="@drawable/add" />
 
         </TableRow>
 

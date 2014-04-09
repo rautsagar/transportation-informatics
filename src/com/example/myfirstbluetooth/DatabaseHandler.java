@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -63,6 +64,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		try {
 			// Inserting Row
 		    db.execSQL("INSERT INTO "+TABLE_AIRFLOW+"(time,value) VALUES("+ts+","+value+")");
+		    Log.d("put in database", value+"");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
