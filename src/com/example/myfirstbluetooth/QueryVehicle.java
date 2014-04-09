@@ -17,7 +17,9 @@ public class QueryVehicle implements Constants {
 	private boolean finished = true;
 	private boolean airflow = false;
 	public ReceiveActivity mReceiveActivity = null;
+
 	DatabaseHandler db; 
+
 	
 	public QueryVehicle() {
 	
