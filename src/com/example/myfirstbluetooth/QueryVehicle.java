@@ -17,13 +17,14 @@ public class QueryVehicle implements Constants {
 	private boolean finished = true;
 	private boolean airflow = false;
 	public ReceiveActivity mReceiveActivity = null;
-	//DatabaseHandler db = new DatabaseHandler(mReceiveActivity.getApplicationContext());
+	DatabaseHandler db; 
 	
 	public QueryVehicle() {
 	
 		mReceiveActivity = new ReceiveActivity();
 		commands = new Vector<String>();
 		communication = "";
+		db = new DatabaseHandler((MyApp)(MyApp.context));
 	}
 
 	public void clearCommands() {
@@ -127,7 +128,7 @@ public class QueryVehicle implements Constants {
             
             if(!value.equals("-1") && airflow){
             	//put it into the database
-            	//db.addEntry(ts, val);
+            	db.addEntry(ts, val);
             	airflow = false;
             	
             }

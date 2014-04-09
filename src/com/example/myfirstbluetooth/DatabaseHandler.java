@@ -59,8 +59,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Adding new log entry for airflow data
 	public void addEntry(Long ts, int value) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		// Inserting Row
-	    db.execSQL("INSERT INTO "+TABLE_AIRFLOW+"(time,value) VALUES("+ts+","+value+")");
+		
+		try {
+			// Inserting Row
+		    db.execSQL("INSERT INTO "+TABLE_AIRFLOW+"(time,value) VALUES("+ts+","+value+")");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 	    db.close(); // Closing database connection
 	}
 	
