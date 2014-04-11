@@ -13,12 +13,6 @@
     	android:orientation="horizontal" >
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="crash"
-            android:text="@string/button_crash" />
-
-        <Button
             android:id="@+id/stats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,22 +33,22 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:text="@string/init" />
-	
+
 	    <Button
-		    android:id="@+id/query"
-		    android:onClick="queryVehicle"
-		    style="?android:attr/buttonStyleSmall"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="@string/query" />
-	    
+	        android:id="@+id/poll"
+	        style="?android:attr/buttonStyleSmall"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:onClick="pollVehicle"
+	        android:text="@string/poll" />
+
 	    <Button
-		    android:id="@+id/poll"
-		    android:onClick="pollVehicle"
-		    style="?android:attr/buttonStyleSmall"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="@string/poll" />
+	        android:id="@+id/endPoll"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="stop poll"
+	        android:onClick="stopPolling"
+	        android:visibility="invisible" />
 	    
    	</LinearLayout>
     
@@ -124,5 +118,12 @@
         android:layout_height="wrap_content"
         android:text="@string/command_received" />
 
+    <TextView
+        android:id="@+id/GPSView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </LinearLayout>

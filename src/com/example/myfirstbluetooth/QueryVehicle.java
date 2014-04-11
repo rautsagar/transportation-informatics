@@ -8,6 +8,7 @@ import java.util.Vector;
 import android.app.Activity;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 public class QueryVehicle implements Constants {
 
@@ -18,8 +19,15 @@ public class QueryVehicle implements Constants {
 	private boolean airflow = false;
 	public ReceiveActivity mReceiveActivity = null;
 
-	DatabaseHandler db; 
-
+	private DatabaseHandler db;
+	//Shared preferences
+	private SessionManagement sharedPref;
+	//Latest tripID
+	private int tripID;
+	
+	//The timer whichh polls the OBD
+	Timer commandTimer;
+	Handler uiHandler;
 	
 	public QueryVehicle() {
 	
@@ -27,6 +35,9 @@ public class QueryVehicle implements Constants {
 		commands = new Vector<String>();
 		communication = "";
 		db = new DatabaseHandler((MyApp)(MyApp.context));
+		sharedPref = new SessionManagement((MyApp)(MyApp.context));
+		tripID = sharedPref.getTrip();
+		uiHandler = new Handler();
 	}
 
 	public void clearCommands() {
@@ -54,12 +65,23 @@ public class QueryVehicle implements Constants {
 		attemptToSend();		
 	}
 
+	//Runs the RunPoll method every second
 	public void poll(String[] cmds) {
 
 		final String[] theCmds = cmds;
-		Timer timer = new Timer();
-		timer.schedule(new RunPoll(theCmds), 0, 1000);	
+		commandTimer = new Timer();
+		Log.d("timer","before");
+		commandTimer.schedule(new RunPoll(theCmds), 0, 1000);	
 	}
+	
+	//Stop the  poll
+	void stopPoll(){
+		if(commandTimer != null){
+			commandTimer.cancel();
+			commandTimer = null;
+		}
+	}
+	
 	
 	private class RunPoll extends TimerTask {
 
@@ -67,10 +89,12 @@ public class QueryVehicle implements Constants {
 		
 		public RunPoll(String[] cmds) {
 			myCmds = cmds;
+			
 		}
 		
 		public void run() {
 			if (finished) {
+				Log.d("timer","in");
 				issueCommands(myCmds);
 			}
 		}
@@ -96,7 +120,7 @@ public class QueryVehicle implements Constants {
 			if (commands.isEmpty()) {
 				finished = true;
 				communication += "\r";
-				((MyApp)(MyApp.context)).myLog.write(communication);
+				//((MyApp)(MyApp.context)).myLog.write(communication);
 				Log.d("log", communication);
 				communication = "";
 			} else {
@@ -106,8 +130,22 @@ public class QueryVehicle implements Constants {
 				airflow = c.equals("01 10");
 						
 				
+				if(((MyApp)(MyApp.context)).connection == null){
+					finished = true;
+					uiHandler.post(new Runnable() {
+						
+						@Override
+						public void run() {
+							Toast.makeText(((MyApp)(MyApp.context)), "Not connected to OBD", Toast.LENGTH_SHORT).show();
+							
+						}
+					});
+		
+					
+				}else{
+					((MyApp)(MyApp.context)).connection.write(c);
+				}
 				
-				((MyApp)(MyApp.context)).connection.write(c);
 				if (communication.length() > 0) {
 					communication += ",";
 				}
@@ -130,11 +168,11 @@ public class QueryVehicle implements Constants {
             
             if(!value.equals("-1") && airflow){
             	//put it into the database
-            	db.addEntry(ts, val);
+            	db.addEntry(tripID,ts, val);
             	airflow = false;
             	
             }
-//            Log.d("",str+":"+Integer.toString(value));
+
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {

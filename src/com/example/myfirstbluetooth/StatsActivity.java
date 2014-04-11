@@ -17,6 +17,8 @@ public class StatsActivity extends Activity {
 	DatabaseHandler db;
 	float fuelUsed = 0;		//Cumulative fuel value variable
 	FetchFuelValues task;
+	SessionManagement sharedPref;
+	int tripID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +28,10 @@ public class StatsActivity extends Activity {
 		
 		showStats = (TextView) findViewById(R.id.statText);
 		costStats = (TextView)findViewById(R.id.costText);
-
+		
+		sharedPref = new SessionManagement(getApplicationContext());
 		db = new DatabaseHandler(getApplicationContext());
+		tripID = sharedPref.getTrip();
 
 		if (db.getCount() > 0) {
 			// Get data from the database
@@ -40,8 +44,8 @@ public class StatsActivity extends Activity {
 			dbResults.moveToNext();
 			while (dbResults.isAfterLast() == false) {
 
-				Long time = dbResults.getLong(1);
-				int value = dbResults.getInt(2);
+				Long time = dbResults.getLong(2);
+				int value = dbResults.getInt(3);
 				Long timeDiff = (time - preTime) / 1000;
 				preTime = time;
 

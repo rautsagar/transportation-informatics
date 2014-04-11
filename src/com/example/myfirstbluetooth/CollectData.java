@@ -1,20 +1,29 @@
 package com.example.myfirstbluetooth;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 
 public class CollectData extends Activity implements Constants {
 
 	public TextView sentTextView, statusTextView, BTstatusTextView;
-	public TextView receivedTextView1, receivedTextView2, receivedTextView3, receivedTextView4, receivedTextView5, receivedTextView6, fuelText;
+	public TextView receivedTextView1, receivedTextView2, receivedTextView3, receivedTextView4, receivedTextView5, receivedTextView6, fuelText, GPS;
+	public Button poll, endPoll;
+	private int tripID;
+	DatabaseHandler db;
+	SessionManagement sharedPref;
 
 	public static ReceiveActivity mReceiveActivity = null;
 	
@@ -35,6 +44,7 @@ public class CollectData extends Activity implements Constants {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
      
+        GPS = (TextView)findViewById(R.id.GPSView);
     	sentTextView = (TextView) findViewById(R.id.command_sent);
     	statusTextView = (TextView) findViewById(R.id.status);
     	BTstatusTextView = (TextView) findViewById(R.id.BTstatus);
@@ -57,12 +67,28 @@ public class CollectData extends Activity implements Constants {
     	receivedTextView5.setText(((MyApp)getApplicationContext()).receivedText[4]);
     	receivedTextView6.setText(((MyApp)getApplicationContext()).receivedText[5]);   
     	
-  
+    	//Polling related buttons
+    	poll = (Button) findViewById(R.id.poll);
+    	endPoll = (Button) findViewById(R.id.endPoll);
+    	
+    	//Initialize shared preferences
+    	sharedPref = new SessionManagement(getApplicationContext());
+    	//initialize the database handler
+    	db = new DatabaseHandler(getApplicationContext());
+    	
+    	//Initialize the trip, get the tripID back
+    	tripID = db.newTrip();
+    	sharedPref.setTrip(tripID);
+    	Log.d("New Trip created", tripID+"");
+ 
         	mReceiveActivity = new ReceiveActivity();
-
+        	((MyApp)getApplicationContext()).startBlueConnect();
+        	
+        	LocationManager mylocman = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        	LocationListener myloclist = new MyLocationListener ();
+        	mylocman.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,20,myloclist);
     }
 
-	
 	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,13 +121,13 @@ public class CollectData extends Activity implements Constants {
     }
     
     public void fakePopulate(){
-    	DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+    	
     	
     	Long ts = 1392678836739L;
 		int value = 2500;
 		// Inserting Row
 		for(int i = 0; i <100; i++){
-			db.addEntry(ts,value);
+			db.addEntry(tripID,ts,value);
 			ts += 1000;
 		}
     	
@@ -113,21 +139,22 @@ public class CollectData extends Activity implements Constants {
     	((MyApp)getApplicationContext()).mQueryVehicle.issueCommands(new String[]{"atz","ate0","atcra 7e8"});    	
     }
     
-    public void queryVehicle(View view) {
-    	((MyApp)getApplicationContext()).mQueryVehicle.issueCommands(new String[]{"01 10","01 0D", "01 31", "01 1F"});    	
-    }
-    
     public void pollVehicle(View view) {
-    	((MyApp)getApplicationContext()).mQueryVehicle.poll(new String[]{"01 10","01 0D", "01 31", "01 1F"});    	    	
+    	
+    	((MyApp)getApplicationContext()).mQueryVehicle.poll(new String[]{"01 10","01 0D"}); 
+    	
+    	poll.setVisibility(View.GONE);
+    	endPoll.setVisibility(View.VISIBLE);
+    	
     }
 
+    public void stopPolling(View view){
+    	Log.d("in","stopPolling");
+    	poll.setVisibility(View.VISIBLE);
+    	endPoll.setVisibility(View.INVISIBLE);
+    	((MyApp)getApplicationContext()).mQueryVehicle.stopPoll();
     	
-    public void crash(View view) {
-    	
-    	String x = null;
-    	Log.d(x,x);    	
     }
-    
     
     public class ReceiveActivity extends Activity {
         // Handler gets created on the UI-thread
@@ -207,6 +234,32 @@ public class CollectData extends Activity implements Constants {
 		default:
 			return ("Busy");
     	}
+    }
+    
+
+    
+    /*---------- Listener class to get coordinates ------------- */
+    private class MyLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location loc) {
+                  	
+            double longitude = loc.getLongitude();
+            
+            double latitude = loc.getLatitude();
+            db.addLoc(tripID, latitude, longitude);
+            GPS.setText("LAT : "+latitude+ "\n LONG: " + longitude);
+            
+      }
+
+        @Override
+        public void onProviderDisabled(String provider) {}
+
+        @Override
+        public void onProviderEnabled(String provider) {}
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
     }
 
 }

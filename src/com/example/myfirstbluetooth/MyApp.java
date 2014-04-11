@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Set;
 import java.util.UUID;
-import android.annotation.SuppressLint;
+
 import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -23,6 +23,7 @@ public class MyApp extends Application implements Constants {
 	public static Context context;
 	
 	public boolean bluetoothSocketConnected = false;
+	public boolean obdConnected = false;
 
 	public String bluetoothStatus = "BT-NC";
 	
@@ -185,12 +186,20 @@ public class MyApp extends Application implements Constants {
 			myBluetooth = new ConnectThread(mBluetoothDevice);
 	    	myBluetooth.start();
 */
-			new ConnectThread(mBluetoothDevice).start();
+		//	new ConnectThread(mBluetoothDevice).start();//Check this line
+			obdConnected = true;
 		} else {
 			Log.d("Bluetooth", "OBD device not found");
 		}
 	}
 
+	
+	public void startBlueConnect(){
+		if(obdConnected){
+			new ConnectThread(mBluetoothDevice).start();
+		}
+		
+	}
 	
 	public void manageConnectedSocket(BluetoothSocket mmSocket) {
 
