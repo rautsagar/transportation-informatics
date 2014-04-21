@@ -7,7 +7,7 @@
     android:textAlignment="center" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/locDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Informatics dashboard"
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="false"
-                android:onClick="startCollectData"
+                android:onClick="startListTrips"
                 android:background="@android:color/transparent"
                 android:scaleType="center"
                 android:src="@drawable/add_expensexml" />

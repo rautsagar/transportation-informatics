@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -24,6 +25,10 @@ public class CollectData extends Activity implements Constants {
 	private int tripID;
 	DatabaseHandler db;
 	SessionManagement sharedPref;
+	
+	//GPS variables
+	LocationManager mylocman;
+	LocationListener myloclist;
 
 	public static ReceiveActivity mReceiveActivity = null;
 	
@@ -43,6 +48,8 @@ public class CollectData extends Activity implements Constants {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
      
         GPS = (TextView)findViewById(R.id.GPSView);
     	sentTextView = (TextView) findViewById(R.id.command_sent);
@@ -76,17 +83,7 @@ public class CollectData extends Activity implements Constants {
     	//initialize the database handler
     	db = new DatabaseHandler(getApplicationContext());
     	
-    	//Initialize the trip, get the tripID back
-    	tripID = db.newTrip();
-    	sharedPref.setTrip(tripID);
-    	Log.d("New Trip created", tripID+"");
- 
-        	mReceiveActivity = new ReceiveActivity();
-        	((MyApp)getApplicationContext()).startBlueConnect();
-        	
-        	LocationManager mylocman = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        	LocationListener myloclist = new MyLocationListener ();
-        	mylocman.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,20,myloclist);
+    	
     }
 
 	
@@ -141,7 +138,19 @@ public class CollectData extends Activity implements Constants {
     
     public void pollVehicle(View view) {
     	
-    	((MyApp)getApplicationContext()).mQueryVehicle.poll(new String[]{"01 10","01 0D"}); 
+    	//Initialize the trip, get the tripID back
+    	tripID = db.newTrip();
+    	sharedPref.setTrip(tripID);
+    	Log.d("New Trip created", tripID+"");
+ 
+        	mReceiveActivity = new ReceiveActivity();
+        	((MyApp)getApplicationContext()).startBlueConnect();
+        	
+        	mylocman = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+             myloclist = new MyLocationListener ();
+        	mylocman.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,20,myloclist);
+    	
+    	//((MyApp)getApplicationContext()).mQueryVehicle.poll(new String[]{"01 10"}); 
     	
     	poll.setVisibility(View.GONE);
     	endPoll.setVisibility(View.VISIBLE);
@@ -152,6 +161,7 @@ public class CollectData extends Activity implements Constants {
     	Log.d("in","stopPolling");
     	poll.setVisibility(View.VISIBLE);
     	endPoll.setVisibility(View.INVISIBLE);
+    	mylocman.removeUpdates(myloclist);
     	((MyApp)getApplicationContext()).mQueryVehicle.stopPoll();
     	
     }

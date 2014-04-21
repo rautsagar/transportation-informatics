@@ -68,4 +68,11 @@ public void startCollectData(View view){
 	
 }
 
+public void startListTrips(View view){
+	
+	Intent intent = new Intent(this, ListTrips.class);
+	startActivity(intent);
+	
+}
+
 }

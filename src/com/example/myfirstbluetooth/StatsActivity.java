@@ -39,7 +39,7 @@ public class StatsActivity extends Activity {
 
 			// iterate through the results and calculate fuel usage
 			dbResults.moveToFirst();
-			Long preTime = dbResults.getLong(1);
+			Long preTime = dbResults.getLong(2);
 			
 			dbResults.moveToNext();
 			while (dbResults.isAfterLast() == false) {

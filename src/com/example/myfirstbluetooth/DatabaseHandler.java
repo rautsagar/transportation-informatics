@@ -150,7 +150,35 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return cursor;
 		
 	}
-
+	
+	Cursor getTripData(){
+		SQLiteDatabase db = this.getReadableDatabase();
+		String query = "SELECT rowid _id,* FROM trip";
+		Cursor cursor = db.rawQuery(query, null);
+		return cursor;
+		
+	}
+float[][] getFirstLast(String id){
+	
+	SQLiteDatabase db = this.getReadableDatabase();
+  String query = "SELECT * FROM locations WHERE  trip_id = "+id +" ORDER BY ROWID ASC LIMIT 1";
+  Cursor cursor = db.rawQuery(query, null);
+  if(cursor.getCount() == 0){
+	  return null;
+  }
+  cursor.moveToFirst();
+  float lat1 = cursor.getFloat(2);
+  float lng1 = cursor.getFloat(3);
+  cursor.close();
+  query = "SELECT * FROM locations WHERE  trip_id ="+ id+" ORDER BY ROWID DESC LIMIT 1";
+  cursor = db.rawQuery(query, null);
+  cursor.moveToFirst();
+  float lat2 = cursor.getFloat(2);
+  float lng2 = cursor.getFloat(3);
+  float[][] startend=  {{lat1,lng1},{lat2,lng2}};
+  return startend;
+	
+}
 	void addLoc(int tripID,double lat, double logn){
 		
 		SQLiteDatabase db = this.getWritableDatabase();

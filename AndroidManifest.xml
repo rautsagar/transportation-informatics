@@ -52,6 +52,15 @@
         <activity 
             android:name="com.example.myfirstbluetooth.Dashboard"
             android:label="Dash"></activity>
+        
+        <activity 
+            android:name="com.example.myfirstbluetooth.ListTrips"
+            android:label="Dash"></activity>
+        
+        <activity 
+            android:name="com.example.myfirstbluetooth.tripDetails"
+            android:label="Dash"></activity>
+        
     </application>
 
 </manifest>

@@ -76,6 +76,7 @@ public class QueryVehicle implements Constants {
 	
 	//Stop the  poll
 	void stopPoll(){
+		
 		if(commandTimer != null){
 			commandTimer.cancel();
 			commandTimer = null;
@@ -126,17 +127,13 @@ public class QueryVehicle implements Constants {
 			} else {
 				c = commands.remove(0);
 				
-				//Check if the current command is airflow command, and set boolean if true
-				airflow = c.equals("01 10");
-						
-				
 				if(((MyApp)(MyApp.context)).connection == null){
 					finished = true;
 					uiHandler.post(new Runnable() {
 						
 						@Override
 						public void run() {
-							Toast.makeText(((MyApp)(MyApp.context)), "Not connected to OBD", Toast.LENGTH_SHORT).show();
+							//Toast.makeText(((MyApp)(MyApp.context)), "Not connected to OBD", Toast.LENGTH_SHORT).show();
 							
 						}
 					});
@@ -166,10 +163,9 @@ public class QueryVehicle implements Constants {
             final int val = interpretElmResult(str);
             final String value = Integer.toString(val);
             
-            if(!value.equals("-1") && airflow){
+            if(!value.equals("-1") ){
             	//put it into the database
             	db.addEntry(tripID,ts, val);
-            	airflow = false;
             	
             }
 
