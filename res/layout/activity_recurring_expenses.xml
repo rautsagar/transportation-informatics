@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/blueberry"
+    android:orientation="vertical"
+    android:textAlignment="center" >
+
+    <TextView
+        android:id="@+id/insuranceQ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/insuranceQuestion" />
+
+    <EditText
+        android:id="@+id/insuranceBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"  >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/paymentQ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/paymentQuestion" />
+
+    <EditText
+        android:id="@+id/paymentBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberDecimal"  />
+
+    <Button
+        android:id="@+id/extraSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:onClick="saveInfo"
+        android:text="Save info" />
+
+
+</LinearLayout>

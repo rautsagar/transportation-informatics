@@ -2,31 +2,192 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/blueberry"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/statText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/costText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-
-    <Button
-        android:id="@+id/button_refresh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Refresh"
-        android:onClick="refresh" />
-    
-    <com.echo.holographlibrary.PieGraph
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/graph"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#33000000" 
+        android:layout_marginBottom="20dp">
+		
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Monthly Spending"
+            android:textSize="20dp" />
+        
+        <TextView
+            android:id="@+id/statText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Monthly Spending"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+    <com.echo.holographlibrary.PieGraph
+        android:id="@+id/graph"
+        android:layout_width="match_parent"
+        
+        android:layout_height="200dp" />
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#99CC00"
+                android:text="ab"
+                android:textSize="15dp"
+              
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#99CC00"
+                android:textColorHint="#99CC00" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+				android:paddingRight="10dp"
+                android:textSize="15dp"
+                android:text="Fuel" />
+
+            <TextView
+                android:id="@+id/dollar1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                 android:textSize="15dp"
+                android:text="$" />
+
+            <TextView
+                android:id="@+id/fuelText"
+                android:layout_width="wrap_content"
+                 android:textSize="15dp"
+                android:layout_height="wrap_content" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFBB33"
+                android:text="ab"
+                android:textSize="15dp"
+                
+                android:textColor="#FFBB33" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:textSize="15dp"
+                android:text="Insurance" />
+			<TextView
+                android:id="@+id/dollar2"
+                android:layout_width="wrap_content"
+                 android:textSize="15dp"
+                android:layout_height="wrap_content"
+                android:text="$" />
+            <TextView
+                android:id="@+id/insText"
+                android:layout_width="wrap_content"
+                 android:textSize="15dp"
+                android:layout_height="wrap_content" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            
+            
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#AA66CC"
+                android:text="ab"
+                android:textSize="15dp"
+                android:textColor="#AA66CC" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                 android:textSize="15dp"
+                android:layout_height="wrap_content"
+                android:text="Car Payments" />
+			<TextView
+                android:id="@+id/dollar2"
+                android:layout_width="wrap_content"
+                 android:textSize="15dp"
+                android:layout_height="wrap_content"
+                android:text="$" />
+			
+            <TextView
+                android:id="@+id/PayText"
+                android:layout_width="wrap_content"
+                 android:textSize="15dp"
+                android:layout_height="wrap_content" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"  >
+            
+             <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#c0392b"
+                android:text="ab"
+                android:textSize="15dp"
+                android:textColor="#c0392b" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                 android:textSize="15dp"
+                android:text="Other expenses" />
+			<TextView
+                android:id="@+id/dollar2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                 android:textSize="15dp"
+                android:text="$" />
+			
+            <TextView
+                android:id="@+id/otherText"
+                android:layout_width="wrap_content"
+                 android:textSize="15dp"
+                android:layout_height="wrap_content" />
+
+        </TableRow>
+    </TableLayout>
     
 
 </LinearLayout>

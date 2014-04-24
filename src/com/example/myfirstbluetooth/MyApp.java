@@ -36,6 +36,7 @@ public class MyApp extends Application implements Constants {
 	public BluetoothDevice mBluetoothDevice = null;
 	public BluetoothSocket mSocket = null;
 	public ConnectedThread connection = null;
+	public ConnectThread tryToConnect = null;
 
 	public int elmStatus = ELM_READY;
 	
@@ -64,7 +65,7 @@ public class MyApp extends Application implements Constants {
             }           
         }
     };
-    
+  
 	
 	@Override
 	public void onCreate() {
@@ -78,47 +79,13 @@ public class MyApp extends Application implements Constants {
 	    this.registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED));
 	    this.registerReceiver(mReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED));
 
-	    
-	    //Builds a name for the log file
-	    Calendar c = Calendar.getInstance();
-	    filename += Integer.toString(c.get(Calendar.YEAR)) + "-";
-	    int x = c.get(Calendar.MONTH) + 1;
-	    if (x < 10) {
-	    	filename += "0";
-	    }
-	    filename += Integer.toString(x) + "-";
-	    x = c.get(Calendar.DAY_OF_MONTH);
-	    if (x < 10) {
-	    	filename += "0";
-	    }
-	    filename += Integer.toString(x) + "-";
-	    x = c.get(Calendar.HOUR_OF_DAY);
-	    if (x < 10) {
-	    	filename += "0";
-	    }
-	    filename += Integer.toString(x) + "-";
-	    x = c.get(Calendar.MINUTE);
-	    if (x < 10) {
-	    	filename += "0";
-	    }
-	    filename += Integer.toString(x) + "-";
-	    x = c.get(Calendar.SECOND);
-	    if (x < 10) {
-	    	filename += "0";
-	    }
-	    filename += Integer.toString(x);
-	    
-//	    filename += ".csv";
-	    
-//	    Log.d("Calendar", filename);
 	    	    
-		myLog = new LogFile(filename+".csv");
+		myLog = new LogFile("filename+.csv");
 		myLog.write("Cmd_Time,Command,Resp_Time,Response\r");
 		//airLog = new LogFile(filename+"-airlog.csv");
 		//airLog.write("Time,Response\n");
 		
 		setUpBluetooth();
-		
 		mQueryVehicle = new QueryVehicle();
 		
 	}
@@ -129,9 +96,13 @@ public class MyApp extends Application implements Constants {
 		return null;
 	}
 
+    public void stopTryToConnect(){
+    	if(tryToConnect != null){
+    		tryToConnect.setInterrupted();
+    	}
+    }
     
-    
-    
+    //Gets a list of paired bluetooth devices, and gets the address of OBDII from that list. Stored once you pair it.
 	private void setUpBluetooth() {
 
 		mBluetoothDevice = null;
@@ -189,14 +160,17 @@ public class MyApp extends Application implements Constants {
 		//	new ConnectThread(mBluetoothDevice).start();//Check this line
 			obdConnected = true;
 		} else {
-			Log.d("Bluetooth", "OBD device not found");
+			Log.d("Bluetooth", "OBD device not paired");
 		}
 	}
 
 	
 	public void startBlueConnect(){
 		if(obdConnected){
-			new ConnectThread(mBluetoothDevice).start();
+			tryToConnect = new ConnectThread(mBluetoothDevice);
+			tryToConnect.start();
+		}else{
+			Log.d("startblueconnect","OBD not connected");
 		}
 		
 	}
@@ -211,10 +185,11 @@ public class MyApp extends Application implements Constants {
     
     
 //    @SuppressLint("NewApi")
+	//Dedicated to creating a connection with the OBD
 	private class ConnectThread extends Thread {
         private BluetoothSocket mmSocket;
         private final BluetoothDevice mmDevice;
-                
+         private boolean interrupted;       
         // TODO generate random UUID
         private final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
         public ConnectThread(BluetoothDevice device) {
@@ -222,6 +197,7 @@ public class MyApp extends Application implements Constants {
             // because mmSocket is final
             BluetoothSocket tmp = null;
             mmDevice = device;
+            interrupted = false; 
 
 /*           
             if (mSocket != null && mSocket.isConnected()) {
@@ -247,6 +223,9 @@ public class MyApp extends Application implements Constants {
         }
      
 		public void run() {
+			
+				
+				
             // Cancel discovery because it will slow down the connection
             mBluetoothAdapter.cancelDiscovery();
          
@@ -281,7 +260,7 @@ public class MyApp extends Application implements Constants {
                 }
                 mmSocket = tmp;
                 if (mmSocket != null) {
-                	Log.d("Bluetooth", "socket create SUCCESS");            	
+                	Log.d("Bluetooth", "socket create SUCCESS : 2");            	
                 }
             
             }
@@ -293,11 +272,19 @@ public class MyApp extends Application implements Constants {
             bluetoothStatus = "BT-Ready";
             CollectData.mReceiveActivity.receiveMyBtStatus(bluetoothStatus);
             Log.d("Bluetooth", "socket CONNECTED");
+		
         }
     
+		
+		//Prepare to stop the thread
+		public void setInterrupted(){
+			interrupted = true;
+		}
+		
         /** Will cancel an in-progress connection, and close the socket */
         public void cancel() {
             try {
+        
                 mmSocket.close();
             } catch (IOException e) { 
             	Log.d("Bluetooth", "Could NOT close SOCKET");

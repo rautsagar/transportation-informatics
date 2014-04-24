@@ -6,13 +6,6 @@
     android:orientation="vertical"
     android:textAlignment="center" >
 
-    <TextView
-        android:id="@+id/locDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Informatics dashboard"
-        android:textColor="#ffffff" />
-
     <ImageButton
         android:id="@+id/imageButton2"
         android:layout_width="wrap_content"
@@ -55,6 +48,29 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/insuranceQ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Compare costs"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/paymentQ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Compare trips"
+                android:textColor="@android:color/white" />
+
+        </TableRow>
+
+        <TableRow
             android:id="@+id/tableRow2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
@@ -66,16 +82,42 @@
                 android:adjustViewBounds="false"
                 android:background="@android:color/transparent"
                 android:scaleType="center"
-                android:src="@drawable/car_info" />
+                android:onClick="startCarDetails"
+                android:src="@drawable/car_details" />
 
             <ImageButton
                 android:id="@+id/imageButton1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="false"
+                android:onClick="inputDialog"
                 android:background="@android:color/transparent"
                 android:scaleType="center"
-                android:src="@drawable/add" />
+                android:src="@drawable/addxml" />
+
+        </TableRow>
+        
+         <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Get Car Info"
+                
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Add expense"
+                android:textColor="@android:color/white" />
 
         </TableRow>
 

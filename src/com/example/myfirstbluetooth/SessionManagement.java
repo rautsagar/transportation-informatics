@@ -25,7 +25,14 @@ public class SessionManagement {
 	// Make the latest trip id available throughout the app
 	private static final String LATEST_TRIP = "latestTrip";
 
+	//Monthly insurance premium amount
+	private static final String INSURANCE_VAL = "insurance_premium";
 	
+	//Monthly Payment on car
+	private static final String PAYMENT_VAL = "monthly_payment";
+	
+	//Georgia fuel rate
+	private static final String FUEL_RATE = "fuel_rate";
 
 	// Constructor
 	public SessionManagement(Context context) {
@@ -45,5 +52,34 @@ public class SessionManagement {
 		return id;
 	}
 	
+	public void setPremium(String value){
+		editor.putFloat(INSURANCE_VAL, Float.parseFloat(value));
+		editor.commit();
+	}
+	
+	public void setPayment(String value){
+		editor.putFloat(PAYMENT_VAL, Float.parseFloat(value));
+		editor.commit();
+	}
+	
+	public float getPremium(){
+		float id = pref.getFloat(INSURANCE_VAL, -1);
+		return id;
+	}
+	
+	public float getPayment(){
+		float id = pref.getFloat(PAYMENT_VAL, -1);
+		return id;
+	}
+	
+	public void setRate(float rate){
+		editor.putFloat(FUEL_RATE, rate);
+		editor.commit();
+	}
+	
+	public float getRate(){
+		float rate = pref.getFloat(FUEL_RATE, -1);
+		return rate;
+	}
 	
 }

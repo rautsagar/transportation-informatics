@@ -17,5 +17,8 @@
     <string name="poll">Poll</string>
     <string name="action_quit">Quit</string>
     <string name="action_fakepop">Fake populate</string>
+    <string name="insuranceQuestion">How much do you pay for insurance per month?</string>
+    <string name="paymentQuestion">How much monthly payment do you make, if any</string>
+    <string name="action_enterDetails">Enter Details</string>
     
 </resources>

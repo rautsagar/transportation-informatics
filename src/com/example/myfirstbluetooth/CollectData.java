@@ -48,6 +48,7 @@ public class CollectData extends Activity implements Constants {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
      
@@ -82,10 +83,22 @@ public class CollectData extends Activity implements Constants {
     	sharedPref = new SessionManagement(getApplicationContext());
     	//initialize the database handler
     	db = new DatabaseHandler(getApplicationContext());
+    	mReceiveActivity = new ReceiveActivity();
     	
     	
     }
 
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+	
+			Log.d("collectData", "onDestroy");
+			((MyApp)getApplicationContext()).stopTryToConnect();
+			
+		
+		
+		super.onDestroy();
+	}
 	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,15 +113,12 @@ public class CollectData extends Activity implements Constants {
         switch (item.getItemId()) {
             case R.id.action_quit:
                 return true;
-            case R.id.action_fakepop:
-            	fakePopulate();
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
     
-   
-  
+
     public void getStats(View view){
     	
     	Intent intent = new Intent(this, StatsActivity.class);
@@ -133,7 +143,10 @@ public class CollectData extends Activity implements Constants {
  
 
     public void queryVehicleInit(View view) {
-    	((MyApp)getApplicationContext()).mQueryVehicle.issueCommands(new String[]{"atz","ate0","atcra 7e8"});    	
+    	Log.d("pressed","init");
+    	((MyApp)getApplicationContext()).startBlueConnect();
+    	((MyApp)getApplicationContext()).mQueryVehicle.issueCommands(new String[]{"atz","ate0","atcra 7e8"}); 
+    	
     }
     
     public void pollVehicle(View view) {
@@ -143,21 +156,20 @@ public class CollectData extends Activity implements Constants {
     	sharedPref.setTrip(tripID);
     	Log.d("New Trip created", tripID+"");
  
-        	mReceiveActivity = new ReceiveActivity();
-        	((MyApp)getApplicationContext()).startBlueConnect();
+        	
         	
         	mylocman = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
              myloclist = new MyLocationListener ();
-        	mylocman.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,20,myloclist);
+        	mylocman.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,50,myloclist);
     	
-    	//((MyApp)getApplicationContext()).mQueryVehicle.poll(new String[]{"01 10"}); 
+    	((MyApp)getApplicationContext()).mQueryVehicle.poll(new String[]{"01 10"}); 
     	
     	poll.setVisibility(View.GONE);
     	endPoll.setVisibility(View.VISIBLE);
     	
     }
-
-    public void stopPolling(View view){
+    
+        public void stopPolling(View view){
     	Log.d("in","stopPolling");
     	poll.setVisibility(View.VISIBLE);
     	endPoll.setVisibility(View.INVISIBLE);
@@ -172,7 +184,9 @@ public class CollectData extends Activity implements Constants {
 
         // This gets executed in a non-UI thread:
         public void receiveMyMessage(String msg) {
+        	
             final String str = msg;
+            
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -222,12 +236,21 @@ public class CollectData extends Activity implements Constants {
         public void receiveMyBtStatus(String status) {
         	
         	final String s = status;
+        	
+        	
 //        	Log.d("handler", "receiveMyBtStatus");        	
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     // This gets executed on the UI thread so it can safely modify Views
                 	BTstatusTextView.setText(s);
+                	
+                	if(s.equals("BT-Ready") && !(poll.getVisibility() == View.VISIBLE)){
+                		Log.d("poll buttion", "setting visible");
+                    	//Ready to poll
+                		poll.setVisibility(View.VISIBLE);
+                    	
+                    }
                 }
             });
         }

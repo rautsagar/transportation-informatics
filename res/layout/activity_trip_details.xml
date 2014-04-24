@@ -5,21 +5,287 @@
     android:background="@drawable/blueberry"
     android:orientation="vertical"
     android:textAlignment="center" >
+    
+     <TextView
+                android:id="@+id/locDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:textColor="#7f8c8d" />
 
-    <TextView
-        android:id="@+id/locDetails"
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Informatics dashboard"
-        android:textColor="#ffffff" />
+        android:background="#33000000" >
 
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="startCollectData"
-        android:background="@android:color/transparent"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/startxml" />
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/fromLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:text="From"
+                android:textColor="#7f8c8d" />
+
+            <TextView
+                android:id="@+id/from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:text="Informatics dashboard"
+                android:paddingLeft="5dip"
+                android:textColor="#ffffff" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            
+            <TextView
+                android:id="@+id/toLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:text="To"
+                android:textColor="#7f8c8d" />
+
+            <TextView
+                android:id="@+id/to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:text="Informatics dashboard"
+                android:paddingLeft="5dip"
+                android:textColor="#ffffff" />
+            
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            
+            <TextView
+                android:id="@+id/distLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:text="Distance"
+                android:textColor="#7f8c8d" />
+
+            <TextView
+                android:id="@+id/dist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:text="Informatics dashboard"
+                android:paddingLeft="5dip"
+                android:textColor="#ffffff" />
+            
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            
+            <TextView
+                android:id="@+id/timeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:text="Time"
+                
+                android:textColor="#7f8c8d" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:text="Informatics dashboard"
+                android:paddingLeft="5dip"
+                android:textColor="#ffffff" />
+            
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            
+            <TextView
+                android:id="@+id/moneyLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:text="Cost"
+                
+                android:textColor="#7f8c8d" />
+
+            <TextView
+                android:id="@+id/cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:text="Informatics dashboard"
+                android:paddingLeft="5dip"
+                android:textColor="#ffffff" />
+            
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#33000000" 
+    android:padding="5dip">
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/martaDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:background="#33000000"
+                android:orientation="vertical"
+                android:padding="5dip"
+                android:visibility="gone" >
+
+                <TextView
+                    android:id="@+id/marta_name_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#33000000"
+                    android:padding="10dip"
+                    android:text="MARTA"
+                    android:textColor="#ff9e00"
+                    android:textSize="25dip"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/marta_time"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#acacac" />
+
+                <TextView
+                    android:id="@+id/marta_cost"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cabDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:background="#33000000"
+                android:orientation="vertical"
+                android:padding="5dip" >
+
+                <TextView
+                    android:id="@+id/cab_name_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#33000000"
+                    android:padding="10dip"
+                    android:text="Taxi"
+                    android:textColor="#ff9e00"
+                    android:textSize="25dip"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/cab_cost"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/zipcarDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:background="#33000000"
+                android:orientation="vertical"
+                android:padding="5dip" >
+
+                <TextView
+                    android:id="@+id/zipcar_name_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#33000000"
+                    android:padding="10dip"
+                    android:text="Zipcar"
+                    android:textColor="#ff9e00"
+                    android:textSize="25dip"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/zipcar_cost"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bikingDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:background="#33000000"
+                android:orientation="vertical"
+                android:padding="5dip" >
+
+                <TextView
+                    android:id="@+id/biking_name_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#33000000"
+                    android:padding="10dip"
+                    android:text="Biking"
+                    android:textColor="#ff9e00"
+                    android:textSize="25dip"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/biking_time"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#acacac" />
+
+                <TextView
+                    android:id="@+id/biking_cost"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cost: Free"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

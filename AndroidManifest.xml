@@ -38,7 +38,9 @@
         <!-- Main activity -->
         <activity
             android:name="com.example.myfirstbluetooth.CollectData"
-            android:label="@string/app_name" >
+            android:label="Collect Data" 
+            android:parentActivityName="com.example.myfirstbluetooth.Dashboard"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             
             
         </activity>
@@ -47,20 +49,40 @@
         <activity
             android:name="com.example.myfirstbluetooth.StatsActivity"
             android:label="Stats"
-            android:parentActivityName="com.example.myfirstbluetooth.CollectData"></activity>
+            android:parentActivityName="com.example.myfirstbluetooth.Dashboard"></activity>
         
         <activity 
             android:name="com.example.myfirstbluetooth.Dashboard"
-            android:label="Dash"></activity>
+            android:label="TIM Dashboard"></activity>
         
         <activity 
             android:name="com.example.myfirstbluetooth.ListTrips"
-            android:label="Dash"></activity>
+            android:label="All Trips"
+            android:parentActivityName="com.example.myfirstbluetooth.Dashboard"></activity>
         
         <activity 
             android:name="com.example.myfirstbluetooth.tripDetails"
-            android:label="Dash"></activity>
+            android:label="Trip Details"
+            android:parentActivityName="com.example.myfirstbluetooth.Dashboard"></activity>
+        
+        <activity 
+            android:name="com.example.myfirstbluetooth.RecurringExpenses"
+            android:label="Trip Details"
+            android:parentActivityName="com.example.myfirstbluetooth.Dashboard"></activity>
+        
+        <activity 
+            android:name="com.example.myfirstbluetooth.carDetails"
+            android:label="Trip Details"
+            android:parentActivityName="com.example.myfirstbluetooth.Dashboard"></activity>
+        <activity 
+            android:name="com.example.myfirstbluetooth.EditExpense"
+            android:label="Trip Details"
+            android:parentActivityName="com.example.myfirstbluetooth.Dashboard"></activity>
         
     </application>
+    
+    	
+        
+    
 
 </manifest>

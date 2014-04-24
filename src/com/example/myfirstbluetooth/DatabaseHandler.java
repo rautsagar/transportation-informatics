@@ -1,5 +1,8 @@
 package com.example.myfirstbluetooth;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -32,8 +35,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_LAT = "latitude";
     private static final String KEY_LONG = "longitude";
     
-	
-
+	//expenses table column names
+    private static final String TABLE_EXPENSES = "expenses";
+    private static final String KEY_TITLE = "title";
+    private static final String KEY_COST = "cost";
+    
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -62,8 +68,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		║ 					║							 ║							║
 		║  trip_id   ║ INTEGER 	  ║ PRIMARY 	║
 		║	  time      ║  REAL            ║							║
+				title			text
 		════════════════════════════
 		*/
+		
 		
 		/*
 		 * locations table:
@@ -74,11 +82,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		 * time  REAL       
 		 */
 		
+		/*
+		 * Expenses Table
+		 * 
+		 * */
+		
 		String create = "CREATE TABLE "+ TABLE_AIRFLOW+"("+KEY_ID+" INTEGER PRIMARY KEY, "+KEY_TRIP+" INTEGER,"+KEY_TIME+" REAL, "+KEY_VAL+" INTEGER)";
 		db.execSQL(create);
 		create = "CREATE TABLE "+ TABLE_TRIP+"("+KEY_TRIP+" INTEGER PRIMARY KEY,"+KEY_TIME+" REAL)";
 		db.execSQL(create);
 		create = "CREATE TABLE "+ TABLE_LOC+" ("+KEY_LOC+" INTEGER PRIMARY KEY AUTOINCREMENT,"+KEY_TRIP+" INTEGER NOT NULL,"+ KEY_LAT+" REAL NOT NULL, "+KEY_LONG+" REAL NOT NULL,"+KEY_TIME+" REAL)";
+		db.execSQL(create);
+		create = "CREATE TABLE "+ TABLE_EXPENSES+"("+KEY_TIME+" REAL NOT NULL,"+KEY_TITLE+" TEXT NOT NULL,"+KEY_COST+" REAL NOT NULL)";
 		db.execSQL(create);
 
 	}
@@ -94,7 +109,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
 
 	}
-	
 	
 	//Create a new Trip
 	public int newTrip(){
@@ -120,11 +134,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Adding new log entry for airflow data
 	public void addEntry(int id,Long ts, int value) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		
+		id++;
 		try {
 			// Inserting Row
 		    db.execSQL("INSERT INTO "+TABLE_AIRFLOW+"(trip_id,time,value) VALUES("+id+","+ts+","+value+")");
-		    Log.d("put in database", value+"");
+		    Log.d("put in database", "val:"+ value+"id:" + id);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -142,6 +156,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
+	public int getCount(int tripId){
+		SQLiteDatabase db = this.getReadableDatabase();
+		String query = "SELECT * FROM "+TABLE_AIRFLOW+" WHERE "+KEY_TRIP+" ="+tripId;
+		Cursor cursor = db.rawQuery(query, null);
+		int length = cursor.getCount(); 
+		db.close();
+		return length;
+		
+	}
+	
 	public Cursor getFuelValues(){
 		SQLiteDatabase db = this.getReadableDatabase();
 		String query = "SELECT * FROM "+TABLE_AIRFLOW;
@@ -151,13 +175,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
+	public Cursor getTripFuelValues(int tripId){
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		String query = "SELECT * FROM "+TABLE_AIRFLOW+" WHERE "+KEY_TRIP+" ="+tripId;
+		Cursor cursor = db.rawQuery(query, null);
+		//db.close();
+		return cursor;
+		
+	}
+	
 	Cursor getTripData(){
 		SQLiteDatabase db = this.getReadableDatabase();
-		String query = "SELECT rowid _id,* FROM trip";
+		String query = "SELECT rowid _id,* FROM trip ORDER BY rowid DESC";
 		Cursor cursor = db.rawQuery(query, null);
 		return cursor;
 		
 	}
+	
+	Cursor getExpenseData(){
+		SQLiteDatabase db = this.getReadableDatabase();
+		String query = "SELECT rowid _id,* FROM "+TABLE_EXPENSES+" ORDER BY rowid DESC";
+		Cursor cursor = db.rawQuery(query, null);
+		return cursor;
+		}
+	
 float[][] getFirstLast(String id){
 	
 	SQLiteDatabase db = this.getReadableDatabase();
@@ -184,7 +226,7 @@ float[][] getFirstLast(String id){
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		Long ts = System.currentTimeMillis();
-		
+		Log.d("locations","added id: "+tripID+ " lat"+ lat);
 		values.put(KEY_TRIP, tripID);
 		values.put(KEY_LAT, lat);
 		values.put(KEY_LONG, logn);
@@ -193,5 +235,54 @@ float[][] getFirstLast(String id){
 		db.close();
 		
 	}
+	
+	void addExpense(String desc, float val){
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		Long ts = System.currentTimeMillis();
+		
+		values.put(KEY_TITLE, desc);
+		values.put(KEY_COST, val);
+		values.put(KEY_TIME, ts);
+		db.insert(TABLE_EXPENSES, null, values);
+		db.close();
+		
+	}
 
+	void deleteExpense(String id){
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_EXPENSES, "rowid" + "=" +id, null);
+		db.close();
+		
+	}
+	
+	float getCurrentMonthExpenses(){
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		
+		  Long ts = System.currentTimeMillis();
+		  SimpleDateFormat formatter=  new SimpleDateFormat("yyyy/MMM");
+		  String monthNow = formatter.format(ts);
+		  
+		  float total = 0;
+		  
+		  String query = "SELECT * FROM "+TABLE_EXPENSES;
+		  Cursor cursor = db.rawQuery(query, null);
+		  cursor.moveToFirst();
+		  
+		  while(!cursor.isAfterLast()){
+			  ts = cursor.getLong(cursor.getColumnIndex(KEY_TIME));
+			  String entryMonth = formatter.format(ts);
+			  if(entryMonth.equalsIgnoreCase(monthNow)){
+				  
+				  total += cursor.getFloat(cursor.getColumnIndex(KEY_COST));
+			  }
+			  
+			  cursor.moveToNext();
+		  }
+		  
+		  return total;
+		
+	}
 }

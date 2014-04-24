@@ -169,5 +169,50 @@ public class QueryAPI {
 		
 		
 	}
+	
+	JSONObject getTransit(String origin, String dest){
+
+		InputStream inputStream = null;
+		String result = null;
+		JSONObject jObject = null;
+		
+		try {
+			
+			String ts = (System.currentTimeMillis()+"").substring(0, 10);
+			String url = "http://maps.googleapis.com/maps/api/directions/json?origin="+origin+"&destination="+dest+"&sensor=false&departure_time="+ts+"&mode=transit";
+			Log.d("transitqquery",url);
+			//String url = "http://maps.googleapis.com/maps/api/distancematrix/json?origins="+lat1+","+lng1+"&destinations="+lat2+","+lng2+"&mode=bicycling&sensor=false";
+			HttpGet httpGet = new HttpGet(url);
+			HttpResponse response = httpClient.execute(httpGet);
+			StatusLine statusLine = response.getStatusLine();
+
+			if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+				HttpEntity entity = response.getEntity();
+
+				inputStream = entity.getContent();
+				
+				// json is UTF-8 by default
+				BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
+				StringBuilder sb = new StringBuilder();
+
+				String line = null;
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				result = sb.toString();
+				
+				 jObject = new JSONObject(result);
+				
+				
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+		
+		return jObject;
+	}
 
 }
